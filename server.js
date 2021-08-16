@@ -86,6 +86,7 @@ app.get("/table", async(req, res, next) => {
       console.log(`File: ${games}.json doesn't exist.`);
       // Request the html page from the set url
       const { data } = await axios.get(urls[games]);
+      console.log(data);
       // Use cheerio to parse data
       const $ = await cheerio.load(data);
       console.log("We have got requested data from external site");
