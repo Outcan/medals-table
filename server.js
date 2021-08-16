@@ -76,17 +76,17 @@ app.get("/table", async(req, res, next) => {
   console.log(urls[games]);
   try {
     // check if we have the request data already saved to a json file
-    if (await checkFileExists(games)) {
-      console.log(`File - ${games}.json exists`);
-      // if the json file exists we read it into memory
-      let jsonData = await getFileAndReturn(games);
-      return res.status(200).json({status: "success", data: jsonData});
-    } else {
+    // if (await checkFileExists(games)) {
+    //   console.log(`File - ${games}.json exists`);
+    //   // if the json file exists we read it into memory
+    //   let jsonData = await getFileAndReturn(games);
+    //   return res.status(200).json({status: "success", data: jsonData});
+    // } else {
       // json data file for the requested games doesn't exist get it
       console.log(`File: ${games}.json doesn't exist.`);
       // Request the html page from the set url
       const { data } = await axios.get(urls[games]);
-      console.log(data);
+      //console.log(data);
       // Use cheerio to parse data
       const $ = await cheerio.load(data);
       console.log("We have got requested data from external site");
@@ -98,11 +98,18 @@ app.get("/table", async(req, res, next) => {
         finalData = $.html($("div[data-cy='table-content']"));
       }
       // Write file to json File
-      let sendData = await writeJsonDataFile(games, finalData);
+      //let sendData = await writeJsonDataFile(games, finalData);
+      // temp start
+      let jsonData = {
+        title: games.replace("-", " ").toUpperCase(),
+        html: finalData
+      };
+      // temp end
       // Sending requested data back
       console.log("Sending requested data back");
-      return res.status(200).json({status: "success", data: JSON.stringify(sendData)});
-    };
+      return res.status(200).json({status: "success", data: JSON.stringify(jsonData)});
+      //return res.status(200).json({status: "success", data: JSON.stringify(sendData)});
+    //};
   } catch (error) {
     console.log(error.message)
   }
