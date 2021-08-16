@@ -1,0 +1,26 @@
+{
+  "name": "medals-table",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "startServer": "nodemon server.js",
+    "js:build": "rollup -c",
+    "watch:js": "chokidar './src/**/*.js' -c 'npm run js:build'"
+  },
+  "keywords": [],
+  "author": "Chris Kew <chris.kew@icloud.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "*",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "chokidar-cli": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
