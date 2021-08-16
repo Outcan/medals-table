@@ -22,3 +22,6 @@ Thumbs.db
 # General
 log/
 *.log
+
+npm-debug.log
+/*.env

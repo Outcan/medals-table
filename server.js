@@ -7,6 +7,12 @@ const app = express();
 const axios = require("axios");
 const cheerio = require("cheerio");
 
+let port = process.env.PORT;
+
+if (port === null || port === "" || port === undefined) {
+  port = 8500;
+}
+
 let urls = {
   "beijing-2008": "https://olympics.com/en/olympic-games/beijing-2008/medals",
   "london-2012": "https://olympics.com/en/olympic-games/london-2012/medals",
@@ -53,8 +59,8 @@ const writeJsonDataFile = async (filename, data) => {
   }
 }
 
-app.listen(8500, () => {
-  console.log("Server running on port 8500");
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
 
 app.use(express.static(path.join(__dirname, "public")));
