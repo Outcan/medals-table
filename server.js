@@ -23,7 +23,7 @@ let urls = {
 const checkFileExists = async (file) => {
   console.log("Checking file exists");
   try {
-    await fs.access(`./tmp/${file}.json`);
+    await fs.access(`/tmp/${file}.json`);
     return true;
   } catch (error) {
     if (error) {
@@ -36,7 +36,7 @@ const checkFileExists = async (file) => {
 const getFileAndReturn = async (file) => {
   console.log(`Getting file ${file}`);
   try {
-    let content = await fs.readFile(`./tmp/${file}.json`, "utf8");
+    let content = await fs.readFile(`/tmp/${file}.json`, "utf8");
     console.log("Got file content and returning it");
     return content;
   } catch (error) {
@@ -51,7 +51,7 @@ const writeJsonDataFile = async (filename, data) => {
       title: filename.replace("-", " ").toUpperCase(),
       html: data
     };
-    await fs.writeFile(`./tmp/${filename}.json`, JSON.stringify(jsonData, null, 2));
+    await fs.writeFile(`/tmp/${filename}.json`, JSON.stringify(jsonData, null, 2));
     console.log("Preparing to send data back");
     return jsonData;
   } catch (error) {
