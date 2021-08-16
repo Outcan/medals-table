@@ -34,7 +34,7 @@ const getFileAndReturn = async (file) => {
     console.log("Got file content and returning it");
     return content;
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
   }
 }
 
@@ -49,7 +49,7 @@ const writeJsonDataFile = async (filename, data) => {
     console.log("Preparing to send data back");
     return jsonData;
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 }
 
@@ -97,10 +97,26 @@ app.get("/table", async(req, res, next) => {
       return res.status(200).json({status: "success", data: JSON.stringify(sendData)});
     };
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
   }
 });
 
+const clientErrorHandler = (err, req, res, next) => {
+  if (req.xhr) {
+    res.status(500).json({status: "error", mesg: "Something has gone wrong please try again later!"});
+  } else {
+    next (err);
+  }
+}
+
+const errorHandler = (err, req, res, next) => {
+  res.status(500);
+  console.error("Error: ", err.message);
+}
+
 app.use((req, res, next) => {
   res.status(404).redirect("/");
-})
+});
+
+app.use(clientErrorHandler);
+app.use(errorHandler);
