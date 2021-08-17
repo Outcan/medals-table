@@ -1597,12 +1597,14 @@
     console.log(selectedOlympics);
     if (localStorage.getItem(`medalsTable-${selectedOlympics}`) !== null) {
       console.log("using local storage");
+      showOverlay();
       checkOrPurge();
       let appEl = document.getElementById("app");
       let doc = new DOMParser().parseFromString(localStorage.getItem(`medalsTable-${selectedOlympics}`), "text/html");
-      console.log(doc);
+      // console.log(doc);
       updateTitleText(selectedOlympics);
       appEl.append(doc.body.firstChild);
+      hideOverlay();
     } else {
       console.log("Getting data");
       getOlympicData(selectedOlympics);
@@ -1618,11 +1620,13 @@
   const getOlympicData = async (query) => {
     console.log("Get Olmpic data", query);
     try {
+      showOverlay();
       const rawData = await axios(`/table?games=${query}`, {
         method: "GET",
       });
       checkOrPurge();
-      handleRawData(rawData);    
+      handleRawData(rawData);
+      hideOverlay();   
     } catch (error) {
       console.log(error);
     }
@@ -1811,6 +1815,18 @@
 
   const updateTitleText = (titleText) => {
     document.querySelector("#app h1").textContent = `${titleText.replace(/-/, " ").toUpperCase()} Medals Table`;
+  };
+
+  const showOverlay = () => {
+    console.log("Show");
+    let overlay = document.querySelector(".overlay");
+    overlay.style.display = "flex";
+  };
+
+  const hideOverlay = () => {
+    console.log("Hide");
+    let overlay = document.querySelector(".overlay");
+    overlay.style.display = "none";
   };
 
   /* **************************************************************** */
