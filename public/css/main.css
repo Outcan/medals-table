@@ -22,8 +22,8 @@ html {
 }
 
 *,
-*:after,
-*:before {
+*::after,
+*::before {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
@@ -154,7 +154,7 @@ main {
   display: none;
 }
 
-.medals th:nth-child(n + 3):nth-last-child(n + 2):before {
+.medals th:nth-child(n + 3):nth-last-child(n + 2)::before {
   content: "";
   width: 18px;
   height: 18px;
@@ -166,7 +166,7 @@ main {
   transform: translateX(-50%);
 }
 
-.medals th:nth-child(n + 3):nth-last-child(n + 2):after {
+.medals th:nth-child(n + 3):nth-last-child(n + 2)::after {
   position: absolute;
   left: 0;
   bottom: 0.5rem;
