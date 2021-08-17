@@ -20,51 +20,11 @@ let urls = {
   "tokyo-2020": "https://www.bbc.co.uk/sport/olympics/57836709"
 };
 
-const checkFileExists = async (file) => {
-  console.log("Checking file exists");
-  try {
-    await fs.access(`/tmp/${file}.json`);
-    return true;
-  } catch (error) {
-    if (error) {
-      console.log("No file found", error.message);
-      return false;
-    }
-  }
-}
-
-const getFileAndReturn = async (file) => {
-  console.log(`Getting file ${file}`);
-  try {
-    let content = await fs.readFile(`/tmp/${file}.json`, "utf8");
-    console.log("Got file content and returning it");
-    return content;
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-const writeJsonDataFile = async (filename, data) => {
-  console.log("Writing JSON data to file");
-  try {
-    let jsonData = {
-      title: filename.replace("-", " ").toUpperCase(),
-      html: data
-    };
-    await fs.writeFile(`/tmp/${filename}.json`, JSON.stringify(jsonData, null, 2));
-    console.log("Preparing to send data back");
-    return jsonData;
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
 });
 
 app.use(express.static(path.join(__dirname, "public")));
-
 
 app.get("/", (req, res) => {
   res.set("Content-Type", "text/html");
@@ -75,18 +35,8 @@ app.get("/table", async(req, res, next) => {
   let { games } = req.query;
   console.log(urls[games]);
   try {
-    // check if we have the request data already saved to a json file
-    // if (await checkFileExists(games)) {
-    //   console.log(`File - ${games}.json exists`);
-    //   // if the json file exists we read it into memory
-    //   let jsonData = await getFileAndReturn(games);
-    //   return res.status(200).json({status: "success", data: jsonData});
-    // } else {
-      // json data file for the requested games doesn't exist get it
-      console.log(`File: ${games}.json doesn't exist.`);
       // Request the html page from the set url
       const { data } = await axios.get(urls[games]);
-      //console.log(data);
       // Use cheerio to parse data
       const $ = await cheerio.load(data);
       console.log("We have got requested data from external site");
@@ -97,19 +47,14 @@ app.get("/table", async(req, res, next) => {
       } else {
         finalData = $.html($("div[data-cy='table-content']"));
       }
-      // Write file to json File
-      //let sendData = await writeJsonDataFile(games, finalData);
-      // temp start
+      // Put in json format
       let jsonData = {
         title: games.replace("-", " ").toUpperCase(),
         html: finalData
       };
-      // temp end
       // Sending requested data back
       console.log("Sending requested data back");
       return res.status(200).json({status: "success", data: JSON.stringify(jsonData)});
-      //return res.status(200).json({status: "success", data: JSON.stringify(sendData)});
-    //};
   } catch (error) {
     console.log(error.message)
   }
