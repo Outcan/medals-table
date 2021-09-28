@@ -1829,6 +1829,7 @@
     overlay.style.display = "none";
   };
 
+
   /* **************************************************************** */
   /* Render UI */
   const buildTable = (rowCells) => {

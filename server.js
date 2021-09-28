@@ -36,7 +36,7 @@ app.get("/table", async(req, res, next) => {
   console.log(urls[games]);
   try {
       // Request the html page from the set url
-      const { data } = await axios.get(urls[games]);
+      const { data } = await axios.get(urls[games], { headers: { "User-Agent": "Mozilla/5.0" }});
       // Use cheerio to parse data
       const $ = await cheerio.load(data);
       console.log("We have got requested data from external site");
